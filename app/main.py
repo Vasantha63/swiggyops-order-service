@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+﻿from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
 from prometheus_client import Counter, Histogram, generate_latest
@@ -80,3 +80,7 @@ def get_order(order_id: int):
     request_counter.labels(method="GET", endpoint="/orders/id").inc()
     conn = get_db()
     order = conn.execute("SELECT * FROM orders WHERE id=?", (order_id,)).fetchone
+@app.get('/health')
+def health():
+    return {'status': 'healthy', 'service': 'order-service'}
+
